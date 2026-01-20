@@ -184,6 +184,7 @@ elif page == "Hypothesis Analysis":
             title="Platform Popularity within Categories (Color = Addiction Level)"
         )
         st.plotly_chart(fig_tree, use_container_width=True)
+        st.info("This graph shows the 'weight' of each platform. The size of the rectangle is the number of students, and the color is how much that platform 'pulls'.")
 
     with tab3:
         st.header("Social Relations & Education")
