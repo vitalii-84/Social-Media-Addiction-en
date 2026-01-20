@@ -5,7 +5,7 @@ import folium
 from streamlit_folium import st_folium
 import numpy as np
 
-# --- НАЛАШТУВАННЯ СТОРІНКИ ---
+# --- PAGE CONFIGURATION ---
 st.set_page_config(
     page_title="Digital Health Dashboard",
     page_icon="⚕️",
@@ -13,112 +13,110 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- ФУНКЦІЯ ЗАВАНТАЖЕННЯ ДАНИХ ---
+# --- DATA LOADING FUNCTION ---
 @st.cache_data
 def load_data():
+    # Ensure the path is correct for your new repository structure
     df = pd.read_csv('data/processed/cleaned_data.csv')
     return df
 
 df = load_data()
 
-# --- БОКОВА ПАНЕЛЬ (SIDEBAR) ---
-# 1. Зображення на самому початку (вгорі)
+# --- SIDEBAR ---
+# 1. Logo at the top
 st.sidebar.image("visuals/main_logo.jpg", width=150)
-st.sidebar.title("🛠 Навігація")
+st.sidebar.title("🛠 Navigation")
 page = st.sidebar.radio(
-    "Оберіть розділ проєкту:",
-    ["Головна", "Аналіз гіпотез", "Глобальна географія", "ML Діагностика", "Аналітичний звіт"]
+    "Select Project Section:",
+    ["Home", "Hypothesis Analysis", "Global Geography", "ML Diagnostics", "Analytical Report"]
 )
 
 st.sidebar.markdown("---")
-st.sidebar.info("Проєкт підготував: Віталій Чернецький")
+st.sidebar.info("Project prepared by: Vitaliy Chernetskyi")
 
-# --- ЛОГІКА ПЕРЕМИКАННЯ СТОРІНОК ---
+# --- PAGE ROUTING LOGIC ---
 
-if page == "Головна":
-    st.title("📊 Аналіз залежності студентів від соціальних мереж")
+if page == "Home":
+    st.title("📊 Students' Social Media Addiction Analysis")
     st.write("""
-    Вітаємо у дослідницькому проєкті, присвяченому аналізу цифрових звичок молоді. 
-    Ми дослідили дані 700+ студентів з усього світу, щоб зрозуміти, як екранний час 
-    впливає на наше реальне життя.
+    Welcome to the research project dedicated to analyzing the digital habits of youth. 
+    We analyzed data from 700+ students worldwide to understand how screen time 
+    affects our real-world lives, health, and relationships.
     """)
     
-    st.subheader("Ключові показники (Global Metrics)")
+    st.subheader("Global Metrics")
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("Респондентів", len(df))
+        st.metric("Respondents", len(df))
     with col2:
-        st.metric("Середній час в соцмережах", f"{df['Avg_Daily_Usage_Hours'].mean():.1f} год/добу")
+        st.metric("Avg. Social Media Time", f"{df['Avg_Daily_Usage_Hours'].mean():.1f} hrs/day")
     with col3:
-        st.metric("Рівень залежності", f"{df['Addicted_Score'].mean():.1f}/з 10")
+        st.metric("Addiction Level", f"{df['Addicted_Score'].mean():.1f}/10")
     with col4:
-        st.metric("Регіонів", df['Region'].nunique())
+        st.metric("Regions", df['Region'].nunique())
 
     st.write("---")
-    st.subheader("Попередній перегляд даних")
-    st.dataframe(df.head(10), width='stretch')
+    st.subheader("Data Preview")
+    st.dataframe(df.head(10), use_container_width=True)
 
-elif page == "Аналіз гіпотез":
-    st.title("🧬 Глибокий аналіз гіпотез")
-    st.write("У цьому розділі ми перевіряємо статистичні припущення про вплив соцмереж на життя студентів.")
+elif page == "Hypothesis Analysis":
+    st.title("🧬 In-depth Hypothesis Analysis")
+    st.write("In this section, we test statistical assumptions regarding the impact of social media on students' lives.")
 
-    # Створюємо закладки для різних груп гіпотез
-    tab1, tab2, tab3 = st.tabs(["🏥 Здоров'я та Психіка", "📱 Платформи", "🤝 Соціальні зв'язки"])
+    # Tabs for different hypothesis groups
+    tab1, tab2, tab3 = st.tabs(["🏥 Health & Psychology", "📱 Platforms", "🤝 Social Relations"])
     level_order = {"Addiction_Level": ["Low", "Medium", "High"]}
 
     with tab1:
-        st.header("Вплив на фізичний та ментальний стан")
+        st.header("Impact on Physical and Mental State")
         
-        st.subheader("Гіпотеза 1: Соцмережі та якість сну")
+        st.subheader("Hypothesis 1: Social Media and Sleep Quality")
         fig1 = px.scatter(
             df, x="Avg_Daily_Usage_Hours", y="Sleep_Hours_Per_Night",
             color="Addiction_Level", trendline="ols",
-            labels={"Avg_Daily_Usage_Hours": "Годин у мережі",
-                    "Sleep_Hours_Per_Night": "Годин сну",
-                    "Addiction_Level": "Рівень залежності"},
+            labels={"Avg_Daily_Usage_Hours": "Daily Hours Online",
+                    "Sleep_Hours_Per_Night": "Sleep Hours",
+                    "Addiction_Level": "Addiction Level"},
             color_discrete_map={"Low": "green", "Medium": "orange", "High": "red"},
             category_orders=level_order
         )
-        st.plotly_chart(fig1, width='stretch')
-        st.success("**Висновок:** Чітка негативна кореляція. Зростання часу у соцмережах безпосередньо веде до скорочення тривалості сну.")
+        st.plotly_chart(fig1, use_container_width=True)
+        st.success("**Verdict:** Clear negative correlation. Increasing social media usage directly leads to a reduction in sleep duration.")
 
         st.write("---")
 
-        st.subheader("Гіпотеза 2: Залежність та ментальний стан")
+        st.subheader("Hypothesis 2: Addiction and Mental Health")
         fig2 = px.box(
             df, x="Addiction_Level", y="Mental_Health_Score",
             color="Addiction_Level", points="all",
-            labels={"Addiction_Level": "Рівень залежності", "Mental_Health_Score": "Бал ментального здоров'я"},
+            labels={"Addiction_Level": "Addiction Level", "Mental_Health_Score": "Mental Health Score"},
             color_discrete_map={"Low": "green", "Medium": "orange", "High": "red"},
             category_orders=level_order
         )
-        st.plotly_chart(fig2, width='stretch')
-        st.success("**Висновок:** Студенти з високим рівнем залежності мають значно нижчі медіанні показники ментального здоров'я.")
+        st.plotly_chart(fig2, use_container_width=True)
+        st.success("**Verdict:** Students with high addiction levels show significantly lower median mental health scores.")
 
     with tab2:
-        st.header("Аналіз за платформами")
-        st.subheader("Гіпотеза 3: Платформи з алгоритмічною стрічкою vs Інші")
+        st.header("Platform Analysis")
+        st.subheader("Hypothesis 3: Algorithmic Feed Platforms vs. Others")
         
         platform_stats = df.groupby('Most_Used_Platform')['Addicted_Score'].mean().sort_values(ascending=False).reset_index()
         
         fig3 = px.bar(
             platform_stats, x="Most_Used_Platform", y="Addicted_Score",
             color="Addicted_Score",
-            labels={"Most_Used_Platform": "Основна платформа", "Addicted_Score": "Середній бал залежності"},
+            labels={"Most_Used_Platform": "Primary Platform", "Addicted_Score": "Avg. Addiction Score"},
             color_continuous_scale="Reds"
         )
-        st.plotly_chart(fig3, width='stretch')
-        st.info("**Аналітичний інсайт:** Платформи, що використовують алгоритми 'нескінченної стрічки' (TikTok, Instagram), мають найвищий статистичний зв'язок із балом залежності.")
+        st.plotly_chart(fig3, use_container_width=True)
+        st.info("**Analytical Insight:** Platforms using 'infinite scroll' algorithms (TikTok, Instagram) have the highest statistical correlation with addiction scores.")
         st.write("---")
         
-        st.header("Аналіз за типами контенту")
-        st.write("Ми згрупували платформи за їхньою основною функцією, щоб знайти 'дофамінові пастки'.")
+        st.header("Content Type Analysis")
+        st.write("Platforms grouped by their core function to identify 'dopamine traps'.")
 
-
-
-        # 1. Скаттер-плот: Час в мережі vs Залежність
-        st.subheader("⚡️ Співвідношення часу в мережі та адиктивності")
+        st.subheader("⚡️ Usage Time vs. Addictiveness")
         
         type_stats = df.groupby('Platform_Type').agg({
             'Addicted_Score': 'mean',
@@ -132,37 +130,24 @@ elif page == "Аналіз гіпотез":
             y="Addicted_Score",
             size="Student_ID", 
             color="Platform_Type",
-            text="Platform_Type", # Підписи прямо на графіку
-            labels={"Avg_Daily_Usage_Hours": "Сер. час використання (год)", 
-                    "Addicted_Score": "Сер. бал залежності"},
-            title="Де виникає найшвидша залежність?",
+            text="Platform_Type",
+            labels={"Avg_Daily_Usage_Hours": "Avg. Usage (Hrs)", 
+                    "Addicted_Score": "Avg. Addiction Score"},
+            title="Where does addiction develop fastest?",
             height=500
         )
 
-        # НАЛАШТУВАННЯ ВІЗУАЛУ
-        fig_scatter.update_layout(
-            showlegend=False,
-            margin=dict(l=20, r=20, t=60, b=20) # Відступи для кращого вигляду
-        )
-
-        # Налаштування осей: фіксований крок 1.0 та вільний простір
+        fig_scatter.update_layout(showlegend=False, margin=dict(l=20, r=20, t=60, b=20))
         fig_scatter.update_xaxes(dtick=1.0, range=[2, 7])
         fig_scatter.update_yaxes(dtick=1.0, range=[3, 8])
-
-        # Корекція тексту: щоб не налізав на бульбашки та не обрізався
-        fig_scatter.update_traces(
-            textposition='top center',
-            cliponaxis=False
-        )
+        fig_scatter.update_traces(textposition='top center', cliponaxis=False)
 
         st.plotly_chart(fig_scatter, use_container_width=True)
-        st.info("**Інсайт:** Категорія 'Entertain-Scroll' (TikTok/Instagram) має найвищу залежність, хоча в месенджерах проводять більше часу. Це доводить агресивність алгоритмів.")
+        st.info("**Insight:** The 'Entertain-Scroll' category (TikTok/Instagram) shows the highest addiction levels despite messaging apps often having more total usage time.")
 
         st.write("---")
         
-        
-        # 2. Гендерний розподіл за категоріями
-        st.subheader("🚻 Хто і що обирає: Гендерний аспект")
+        st.subheader("🚻 Gender Preferences")
         
         gender_data = df.groupby(['Platform_Type', 'Gender']).size().reset_index(name='Count')
         
@@ -172,21 +157,17 @@ elif page == "Аналіз гіпотез":
             y="Count", 
             color="Gender",
             barmode="group",
-            labels={"Platform_Type": "Тип платформи", 
-                    "Count": "Кількість"},
-            title="Розподіл інтересів між чоловіками та жінками",
+            labels={"Platform_Type": "Platform Type", "Count": "User Count"},
+            title="Interest Distribution by Gender",
             color_discrete_map={"Male": "#1f77b4", "Female": "#e377c2"}
         )
         st.plotly_chart(fig_gender, use_container_width=True)
-        st.warning("**Гендерний розрив:** Хлопці значно більше схильні до використання 'Social-Network' (новинних стрічок), тоді як дівчата домінують у розважальному контенті.\n\n"
-                   "👉 Це вказує на різницю в цілях: хлопці йдуть за інформацією, дівчата — за візуальним контентом."
-        )
+        st.warning("**Gender Gap:** Male respondents are more inclined toward 'Social-Network' (news feeds), while females dominate in entertainment-focused content.")
+        
         st.write("---")
         
-        # 3. Ієрархічна структура: Категорії та Платформи
-        st.subheader("🔍 Структура цифрового споживання")
+        st.subheader("🔍 Digital Consumption Structure")
         
-        # Готуємо дані для Treemap
         tree_data = df.groupby(['Platform_Type', 'Most_Used_Platform']).agg({
             'Addicted_Score': 'mean',
             'Student_ID': 'count'
@@ -194,27 +175,19 @@ elif page == "Аналіз гіпотез":
 
         fig_tree = px.treemap(
             tree_data, 
-            path=['Platform_Type', 'Most_Used_Platform'], # Створюємо ієрархію
+            path=['Platform_Type', 'Most_Used_Platform'], 
             values='Student_ID', 
             color='Addicted_Score',
-            color_continuous_scale='RdYlGn_r', # Від зеленого (низька) до червоного (висока)
-            labels={'Student_ID': 'Кількість користувачів', 'Addicted_Score': 'Сер. бал залежності'},
-            title="Популярність платформ у межах категорій (колір — рівень залежності)"
+            color_continuous_scale='RdYlGn_r',
+            labels={'Student_ID': 'Respondents', 'Addicted_Score': 'Avg. Addiction Score'},
+            title="Platform Popularity within Categories (Color = Addiction Level)"
         )
-        
         st.plotly_chart(fig_tree, use_container_width=True)
-        st.info("Цей графік показує 'вагу' кожної платформи. Розмір прямокутника — це кількість студентів, а колір — наскільки ця платформа 'затягує'.")
-
-
-
-    
-    
 
     with tab3:
-        st.header("Соціальні зв'язки та навчання")
+        st.header("Social Relations & Education")
         
-        # --- Гіпотеза 4 ---
-        st.subheader("Гіпотеза 4: Конфлікти та статус стосунків")
+        st.subheader("Hypothesis 4: Conflicts and Relationship Status")
         conflict_stats = df.groupby('Relationship_Status')['Conflicts_Over_Social_Media'].mean().sort_values().reset_index()
         
         fig4 = px.bar(
@@ -222,61 +195,52 @@ elif page == "Аналіз гіпотез":
             x="Conflicts_Over_Social_Media", 
             y="Relationship_Status",
             orientation='h',
-            title="Середня частота конфліктів за статусом стосунків",
-            labels={"Relationship_Status": "Статус стосунків", "Conflicts_Over_Social_Media": "Сер. кількість конфліктів"},
+            title="Avg. Conflict Frequency by Relationship Status",
+            labels={"Relationship_Status": "Status", "Conflicts_Over_Social_Media": "Avg. Conflicts"},
             color="Conflicts_Over_Social_Media", 
             color_continuous_scale="Reds"
         )
-        st.plotly_chart(fig4, width='stretch')
-        st.success("**Вердикт:** Гіпотеза підтверджена. Статус 'Complicated' демонструє найвищий рівень конфліктів через соціальні медіа.")
+        st.plotly_chart(fig4, use_container_width=True)
+        st.success("**Verdict:** Hypothesis confirmed. 'Complicated' status shows the highest level of social media-related conflicts.")
         
         st.write("---")
 
-        # --- Гіпотеза 5 ---
-        st.subheader("Гіпотеза 5: Стосунки як захисний фактор")
+        st.subheader("Hypothesis 5: Relationships as a Protective Factor")
         fig6 = px.box(
             df, 
             x="Relationship_Status", 
             y="Addicted_Score",
             color="Relationship_Status",
-            title="Розподіл рівня залежності за статусом стосунків",
-            labels={"Relationship_Status": "Статус стосунків", "Addicted_Score": "Бал залежності"},
+            title="Addiction Score Distribution by Relationship Status",
+            labels={"Relationship_Status": "Status", "Addicted_Score": "Addiction Score"},
             color_discrete_sequence=px.colors.qualitative.Safe
         )
-        st.plotly_chart(fig6, width='stretch')
-        st.info("**Висновок:** Стабільні стосунки ('In a relationship') часто виступають стримуючим фактором, знижуючи середній рівень цифрової залежності.")
+        st.plotly_chart(fig6, use_container_width=True)
+        st.info("**Conclusion:** Stable relationships ('In a relationship') often act as a buffer, lowering average digital addiction levels.")
 
         st.write("---")
         
-        # --- Гіпотеза 6 ---
-        st.subheader("Гіпотеза 6: Вплив залежності на успішність")
+        st.subheader("Hypothesis 6: Impact of Addiction on Academic Performance")
         fig5 = px.box(
             df, x="Addiction_Level", y="Affects_Academic_Performance_Numeric",
             color="Addiction_Level",
             labels={
-                "Addiction_Level": "Рівень залежності",
-                "Affects_Academic_Performance_Numeric": "Вплив на успішність (числовий бал)"
+                "Addiction_Level": "Addiction Level",
+                "Affects_Academic_Performance_Numeric": "Impact on Performance (Numeric Score)"
             },
             color_discrete_map={"Low": "green", "Medium": "orange", "High": "red"},
             category_orders=level_order
         )
-        st.plotly_chart(fig5, width='stretch')
-        st.success("**Вердикт:** Гіпотеза підтверджена — висока цифрова залежність статистично корелює зі зниженням академічної успішності.")
+        st.plotly_chart(fig5, use_container_width=True)
+        st.success("**Verdict:** Hypothesis confirmed — high digital addiction statistically correlates with decreased academic performance.")
 
-    
+elif page == "Global Geography":
+    st.title("🌍 Global Geography of Addiction")
+    st.write("How is digital addiction distributed across the globe?")
 
-
-
-elif page == "Глобальна географія":
-    st.title("🌍 Глобальна географія залежності")
-    st.write("Як цифрова залежність розподілена по світу?")
-
-    # 1. Підготовка даних для карти
-    # Рахуємо середній бал для кожної країни
     country_map_data = df.groupby('Country')['Addicted_Score'].mean().reset_index()
 
-    # 2. Створення інтерактивної карти світу
-    st.subheader("Світова карта рівня залежності")
+    st.subheader("World Map of Addiction Levels")
     
     fig_map = px.choropleth(
         country_map_data,
@@ -285,25 +249,19 @@ elif page == "Глобальна географія":
         color="Addicted_Score",
         hover_name="Country",
         color_continuous_scale="YlOrRd", 
-        labels={"Addicted_Score": "Сер. бал залежності"}
+        labels={"Addicted_Score": "Avg. Addiction Score"}
     )
     
     fig_map.update_layout(
-        geo=dict(
-            showframe=False,
-            showcoastlines=True,
-            projection_type='natural earth' # Робимо карту візуально привабливішою
-        ),
+        geo=dict(showframe=False, showcoastlines=True, projection_type='natural earth'),
         margin={"r":0,"t":40,"l":0,"b":0}
     )
-    st.plotly_chart(fig_map, width='stretch')
+    st.plotly_chart(fig_map, use_container_width=True)
 
     st.write("---")
 
-    # 3. Гіпотеза 7: Порівняння макрорегіонів
-    st.subheader("Гіпотеза 7: Регіональні відмінності (Пн. Америка vs Європа)")
+    st.subheader("Hypothesis 7: Regional Differences (N. America vs. Europe)")
     
-    # Використовуємо колонку Region, яку ми підготували під час очищення даних
     region_stats = df.groupby('Region')['Addicted_Score'].mean().sort_values(ascending=True).reset_index()
     
     fig_region = px.bar(
@@ -312,36 +270,28 @@ elif page == "Глобальна географія":
         y="Region",
         orientation='h',
         color="Addicted_Score",
-        text_auto='.2f', # Виводимо точне значення на стовпчиках
-        title="Порівняння середнього рівня залежності за континентами",
-        labels={"Region": "Континент", "Addicted_Score": "Середній бал"},
+        text_auto='.2f', 
+        title="Average Addiction Score by Continent",
+        labels={"Region": "Continent", "Addicted_Score": "Avg. Score"},
         color_continuous_scale="Viridis"
     )
-    st.plotly_chart(fig_region, width='stretch')
+    st.plotly_chart(fig_region, use_container_width=True)
 
     st.success("""
-    **Вердикт:** Гіпотеза 7 підтверджена. Регіони з високою концентрацією технологічних хабів 
-    (зокрема Північна Америка) демонструють вищі показники адиктивності порівняно з Європою.
+    **Verdict:** Hypothesis 7 confirmed. Regions with high concentrations of tech hubs 
+    (notably North America) show higher addiction scores compared to Europe.
     """)
     st.write("---")
 
+    st.subheader("🌍 Regional Platform Leaders")
+    st.write("Which platform dominates on each continent?")
 
-    
-    # import folium
-    # from streamlit_folium import st_folium
-    # import numpy as np
-
-    st.subheader("🌍 Регіональні лідери платформ")
-    st.write("Яка платформа домінує на кожному континенті?")
-
-    # 1. Словник логотипів (надійні посилання)
     platform_logos = {
         "Instagram": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
         "TikTok": "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
         "Facebook": "https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"
     }
 
-    # Координати центрів (підправлені для кращого вигляду)
     region_coords = {
         "Europe": [50, 15],
         "Asia": [35, 90],
@@ -351,16 +301,14 @@ elif page == "Глобальна географія":
         "Africa": [5, 20]
     }
 
-    # 2. Дані
     region_counts = df.groupby(['Region', 'Most_Used_Platform']).size().reset_index(name='Count')
     top_reg = region_counts.loc[region_counts.groupby('Region')['Count'].idxmax()]
 
-    # 3. Створення карти (без тексту, (PositronNoLabels))
     m = folium.Map(
         location=[20, 0], 
         zoom_start=2, 
         tiles='https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
-        attr='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        attr='&copy; CARTO'
     )
 
     for _, row in top_reg.iterrows():
@@ -369,153 +317,102 @@ elif page == "Глобальна географія":
         platform = row['Most_Used_Platform']
         
         if region in region_coords:
-            # ФОРМУЛА РОЗМІРУ:
-            # Базовий розмір 45px + приріст на основі кореня від кількості
-            # Це зробить малі значення (як у Пд. Америці) помітними
             icon_size = 40 + (np.sqrt(count) * 4) 
-            
             logo_url = platform_logos.get(platform, "")
             
             if logo_url:
                 icon = folium.CustomIcon(logo_url, icon_size=(icon_size, icon_size))
-                
-                # Додаємо маркер
                 folium.Marker(
                     location=region_coords[region],
                     icon=icon,
-                    tooltip=f"<b>{region}</b><br>Платформа: {platform}<br>Кількість: {count}"
+                    tooltip=f"<b>{region}</b><br>Platform: {platform}<br>Users: {count}"
                 ).add_to(m)
 
-    # Відображення
     st_folium(m, width="100%", height=550)
-    st.info("**Географічний розподіл:** Instagram домінує в більшості регіонів, тоді як TikTok та Facebook утримують лідерство в Південній Америці та Африці відповідно.")
+    st.info("**Geographic Distribution:** Instagram dominates most regions, while TikTok and Facebook hold leads in South America and Africa respectively.")
 
     st.write("---")
-    
 
+    st.subheader('🗂️ Concentration Matrix')
+    st.write('Where are the users of each network concentrated?')
 
-
-
-
-
-
-
-    
-    st.subheader('🗂️ Матриця концентрації')
-    st.write('Де зосереджені користувачі кожної окремої мережі?')
-
-    # 1. Готуємо дані (агрегуємо кількість)
     bubble_data = df.groupby(['Region', 'Most_Used_Platform']).size().reset_index(name='User_Count')
-
-    # --- НОВИЙ БЛОК: Сортування категорій ---
-    # Створюємо відсортовані списки назв
     sorted_platforms = sorted(bubble_data['Most_Used_Platform'].unique())
     sorted_regions = sorted(bubble_data['Region'].unique())
-    # ----------------------------------------
     
-    # 2. Будуємо категоріальний Bubble Chart
     fig_bubble = px.scatter(
         bubble_data,
         x="Region",
         y="Most_Used_Platform",
-        size="User_Count",          # Розмір залежить від кількості
-        color="User_Count",         # Колір для додаткового акценту
-        text="User_Count",          # Виводимо число всередині або поруч
-        size_max=60,                # Максимальний розмір бульбашки
-        labels={
-            "Region": "Регіон світу", 
-            "Most_Used_Platform": "Соціальна мережа",
-            "User_Count": "Кількість"
-        },
-        # ПРИМУСОВЕ СОРТУВАННЯ ТУТ:
-        category_orders={
-            "Most_Used_Platform": sorted_platforms,
-            "Region": sorted_regions
-        },
+        size="User_Count",
+        color="User_Count",
+        text="User_Count",
+        size_max=60,
+        labels={"Region": "Global Region", "Most_Used_Platform": "Social Network", "User_Count": "Count"},
+        category_orders={"Most_Used_Platform": sorted_platforms, "Region": sorted_regions},
         color_continuous_scale="Viridis",
         height=600
     )
 
-    # Налаштування вигляду
     fig_bubble.update_traces(textposition='middle center', textfont=dict(color='white'))
-    fig_bubble.update_layout(
-        xaxis={'side': 'top'}, # Переносимо назви регіонів вгору для зручності
-        showlegend=False
-    )
+    fig_bubble.update_layout(xaxis={'side': 'top'}, showlegend=False)
 
     st.plotly_chart(fig_bubble, use_container_width=True)
 
-    
     st.info("""
-    **Географічний інсайт:**
-    * **Європейський хаб:** Європа є центром активності для більшості західних платформ.
-    * **Азійська специфіка:** Тільки в Азії ми бачимо активність у WeChat, LINE та KakaoTalk.
-    * **Глобальність Instagram:** Рядок Instagram має найяскравіші кольори майже в усіх стовпчиках.
+    **Geographic Insight:**
+    * **European Hub:** Europe is a center of activity for most Western platforms.
+    * **Asian Specificity:** Only in Asia do we see significant activity in WeChat, LINE, and KakaoTalk.
+    * **Global Instagram:** The Instagram row shows the highest intensity across nearly all columns.
     """)
-    
 
-
-    
-   
-
-
-
-
-elif page == "ML Діагностика":
-    st.title("💻⚙️ Машинне навчання: Цифровий профіль")
+elif page == "ML Diagnostics":
+    st.title("💻⚙️ Machine Learning: Digital Profile")
     st.write("""
-    Цей інструмент використовує логіку алгоритму **K-Means**, щоб визначити, до якої групи користувачів 
-    ви належите, на основі ваших відповідей.
+    This tool uses **K-Means clustering** logic to determine which user group 
+    you belong to based on your digital habits.
     """)
 
-    st.subheader("Введіть ваші показники:")
+    st.subheader("Enter your metrics:")
     
     with st.container(border=True):
         col_in1, col_in2 = st.columns(2)
         
         with col_in1:
-            usage = st.slider("Скільки годин на день ви проводите в соцмережах?", 0.0, 24.0, 5.0, step=0.25)
-            sleep = st.slider("Скільки годин ви зазвичай спите?", 0.0, 12.0, 8.0, step=0.25)
+            usage = st.slider("Daily social media hours?", 0.0, 24.0, 5.0, step=0.5)
+            sleep = st.slider("Daily sleep hours?", 0.0, 12.0, 8.0, step=0.5)
         
         with col_in2:
-            mental = st.select_slider("Оцініть свій ментальний стан (1 - погано, 10 - чудово)", options=list(range(1, 11)), value=8)
-            performance = st.radio("Чи впливають соцмережі на вашу успішність?", ["Негативно", "Нейтрально/Позитивно"])
+            mental = st.select_slider("Rate your mental state (1 - Poor, 10 - Excellent)", options=list(range(1, 11)), value=8)
+            performance = st.radio("Does social media affect your performance?", ["Negatively", "Neutral/Positively"])
 
-    # Кнопка для розрахунку
-    if st.button("Визначити мій профіль", type="primary", width='stretch'):
-        
-        # ПЕРЕВІРКА РЕАЛЬНОСТІ ДАНИХ (Логічний фільтр)
+    if st.button("Analyze My Profile", type="primary", use_container_width=True):
         if (usage + sleep) > 24.0:
-            st.error(f"⚠️ **Помилка даних:** Сума годин у мережі ({usage}) та сну ({sleep}) складає {usage + sleep} год. В добі всього 24 години. Будь ласка, скоригуйте введені дані.")
+            st.error(f"⚠️ **Data Error:** Total hours ({usage + sleep}) exceed 24 hours in a day. Please adjust.")
         else:
-            # РОЗРАХУНОК (тільки якщо дані пройшли перевірку)
             risk_score = (usage * 0.4) + ((10 - mental) * 0.3) + ((8 - sleep) * 0.3)
             
             st.write("---")
-            st.subheader("Результат аналізу:")
+            st.subheader("Analysis Result:")
             
             if usage >= 6.0 or risk_score > 5.0:
-                st.error("🔴 **Ваш профіль: Високий рівень залежності**")
-                st.warning("Ваші показники збігаються з групою 'High Addiction'. Рекомендуємо переглянути цифрові звички.")
+                st.error("🔴 **Your Profile: High Addiction Level**")
+                st.warning("Your metrics align with the 'High Addiction' cluster. We recommend reviewing your digital habits.")
             elif usage >= 4.0 or risk_score > 3.0:
-                st.warning("🟡 **Ваш профіль: Середній рівень (Група ризику)**")
-                st.info("Ви знаходитесь у зоні 'Medium Addiction'.")
+                st.warning("🟡 **Your Profile: Medium Level (At-Risk)**")
+                st.info("You are currently in the 'Medium Addiction' zone.")
             else:
-                st.success("🟢 **Ваш профіль: Збалансований користувач**")
+                st.success("🟢 **Your Profile: Balanced User**")
                 st.balloons()
-                st.write("Ваші показники відповідають групі 'Low Addiction'.")
+                st.write("Your metrics align with the 'Low Addiction' cluster.")
 
-
-
-elif page == "Аналітичний звіт":
+elif page == "Analytical Report":
     try:
-            # Відкриваємо та читаємо файл
-            with open("STORYTELLING.md", "r", encoding="utf-8") as f:
-                story_content = f.read()
-            
-            # Відображаємо вміст
-            # unsafe_allow_html=True потрібен, якщо у вашому MD є HTML-теги (наприклад, для центрування картинок)
-            st.markdown(story_content, unsafe_allow_html=True)
+        # Assumes you have an English version or have translated STORYTELLING.md
+        with open("STORYTELLING.md", "r", encoding="utf-8") as f:
+            story_content = f.read()
+        
+        st.markdown(story_content, unsafe_allow_html=True)
             
     except FileNotFoundError:
-        st.error("Файл STORYTELLING.md не знайдено. Переконайтеся, що він лежить у корені проекту.")
+        st.error("File STORYTELLING.md not found in the project root.")
