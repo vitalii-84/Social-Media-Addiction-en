@@ -32,7 +32,7 @@ page = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.info("Project prepared by: Vitaliy Chernetskyi")
+st.sidebar.info("Project prepared by: Vitalii Chernetskyi")
 
 # --- PAGE ROUTING LOGIC ---
 
