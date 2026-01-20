@@ -162,7 +162,7 @@ elif page == "Hypothesis Analysis":
             color_discrete_map={"Male": "#1f77b4", "Female": "#e377c2"}
         )
         st.plotly_chart(fig_gender, use_container_width=True)
-        st.warning("**Gender Gap:** Male respondents are more inclined toward 'Social-Network' (news feeds), while females dominate in entertainment-focused content."
+        st.warning("**Gender Gap:** Male respondents are more inclined toward 'Social-Network' (news feeds), while females dominate in entertainment-focused content.\n\n"
                   "👉 This indicates a difference in goals: boys go for information, girls for visual content.")
         
         st.write("---")
