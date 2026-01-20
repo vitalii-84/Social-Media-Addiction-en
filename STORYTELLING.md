@@ -5,63 +5,61 @@
 [![Global Dataset](https://img.shields.io/badge/Dataset-700%2B%20Students-green)]()
 [![Year](https://img.shields.io/badge/Study-2026-lightgrey)]()
 
-
-
-# 📖 Цифрові кайдани: Історія одного дослідження
-### Storytelling аналіз проекту *"Students' Social Media Addiction"*
+# 📖 Digital Shackles: The Story of One Study
+### Storytelling analysis of the project *"Students' Social Media Addiction"*
 
 ---
 
-## 🌍 Глобальний контекст
-Сьогодні соціальні мережі — це не просто інструменти спілкування, це цифрові екосистеми, що борються за кожну секунду нашої уваги.  
-Ми проаналізували дані **700+ студентів із шести континентів**, щоб зрозуміти: де закінчується розвага і починається залежність?
+## 🌍 Global Context
+Today, social networks are not just communication tools — they are digital ecosystems competing for every second of our attention.  
+We analyzed data from **700+ students across six continents** to understand: where does entertainment end and addiction begin?
 
 ---
 
-## 1️⃣ Дофамінова пастка алгоритмів
-Наше дослідження виявило чітку межу між типами платформ:
+## 1️⃣ The Dopamine Trap of Algorithms
+Our study revealed a clear boundary between types of platforms:
 
-- 💬 **Месенджери** (WhatsApp, Telegram) → використовуються як інструмент.  
-- 📸 **Алгоритмічні стрічки** (TikTok, Instagram) → використовуються як наркотик.  
+- 💬 **Messengers** (WhatsApp, Telegram) → used as tools.  
+- 📸 **Algorithmic feeds** (TikTok, Instagram) → used like a drug.  
 
-> Студенти, що обирають TikTok та Instagram як основні платформи, мають на **18% вищий рівень адикції**.  
-> Нескінченна стрічка створює ілюзію новизни, змушуючи мозок виділяти дофамін, що призводить до втрати контролю над часом.
-
----
-
-## 2️⃣ Ціна "безкоштовного" контенту
-Ми виявили, що за кожну зайву годину в мережі студенти платять найдорожчим ресурсом — **здоров'ям**.
-
-- 😴 **Сон**: Кожна година понад норму скорочує сон на **42 хвилин**.  
-- 🧠 **Ментальний стан**: Студенти з високим рівнем залежності мають на **38% нижчі показники психологічного благополуччя**.
+> Students who choose TikTok and Instagram as their primary platforms show **18% higher addiction levels**.  
+> The endless feed creates an illusion of novelty, forcing the brain to release dopamine, which leads to loss of control over time.
 
 ---
 
-## 3️⃣ Соціальний парадокс
-Хоча мережі називаються "соціальними", вони часто стають причиною конфліктів.
+## 2️⃣ The Price of "Free" Content
+We found that for every extra hour spent online, students pay with their most valuable resource — **health**.
 
-- ⚠️ Найбільш вразлива група — студенти зі статусом *"Complicated"*.  
-  Для них соцмережі стають полем битви та джерелом ревнощів, що призводить до найвищої частоти конфліктів у реальному житті.  
-
-- 💞 Навпаки, стабільні стосунки (*"In Relationship"*) виступають своєрідним **захисним буфером**, знижуючи рівень цифрової залежності.
+- 😴 **Sleep**: Each hour beyond the norm reduces sleep by **42 minutes**.  
+- 🧠 **Mental state**: Students with high levels of addiction show **38% lower psychological well-being scores**.
 
 ---
 
-## 4️⃣ Математика поведінки (ML-інсайт)
-Використовуючи машинне навчання (**K-Means**), ми змогли "побачити" невидимі групи:
+## 3️⃣ The Social Paradox
+Although networks are called "social," they often become a source of conflict.
 
-- 🟢 **Balanced (Збалансовані)**: Використовують мережі для справи, сплять 7–8 годин, мають стабільну психіку.  
-- 🟡 **At-Risk (Група ризику)**: Проводять у мережі понад 4 години, сон починає скорочуватися.  
-- 🔴 **Addicted (Залежні)**: Понад 6 годин онлайн. Для цієї групи соцмережі замістили реальні хобі та якісний відпочинок.
+- ⚠️ The most vulnerable group — students with the status *"Complicated"*.  
+  For them, social networks become a battlefield and a source of jealousy, leading to the highest frequency of conflicts in real life.  
+
+- 💞 In contrast, stable relationships (*"In Relationship"*) act as a **protective buffer**, reducing the level of digital addiction.
 
 ---
 
-## 🏁 Фінальний висновок
-**Цифрова залежність — це не міф, а нова реальність.**  
-Проект довів, що найбільша небезпека криється не в самих технологіях, а в алгоритмах споживання.
+## 4️⃣ The Mathematics of Behavior (ML Insight)
+Using machine learning (**K-Means**), we were able to "see" invisible groups:
 
-> Головний урок дослідження:  
-> Важливо бути не продуктом алгоритму, а свідомим користувачем інструменту.  
-> Баланс між "онлайн" та "офлайн" — це не розкіш, а необхідна умова збереження ментального здоров'я в **2026 році**.
+- 🟢 **Balanced**: Use networks purposefully, sleep 7–8 hours, maintain stable mental health.  
+- 🟡 **At-Risk**: Spend more than 4 hours online, sleep begins to shorten.  
+- 🔴 **Addicted**: More than 6 hours online. For this group, social networks have replaced real hobbies and quality rest.
+
+---
+
+## 🏁 Final Conclusion
+**Digital addiction is not a myth, but a new reality.**  
+The project proved that the greatest danger lies not in the technologies themselves, but in the algorithms of consumption.
+
+> The main lesson of the study:  
+> It is important not to be a product of the algorithm, but a conscious user of the tool.  
+> Balance between "online" and "offline" is not a luxury, but a necessary condition for preserving mental health in **2026**.
 
 ---
