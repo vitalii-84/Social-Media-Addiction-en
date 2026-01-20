@@ -110,7 +110,9 @@ elif page == "Hypothesis Analysis":
             color_continuous_scale="Reds"
         )
         st.plotly_chart(fig3, use_container_width=True)
-        st.info("**Analytical Insight:** Platforms using 'infinite scroll' algorithms (TikTok, Instagram) have the highest statistical correlation with addiction scores.")
+        st.info("**Analytical Insight:** Platforms using 'infinite scroll' algorithms (TikTok, Instagram) have the highest statistical correlation with addiction scores./n/n"
+                "This proves the aggressiveness of the algorithms."
+               )
         st.write("---")
         
         st.header("Content Type Analysis")
